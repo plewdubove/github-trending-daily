@@ -1,6 +1,9 @@
 name: Run Python Script
 
-on: push
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   run-python-script:
@@ -13,4 +16,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      - run: pip install -r requirements.txt
+
       - run: python main.py
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
